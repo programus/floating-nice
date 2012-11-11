@@ -27,13 +27,13 @@ public class DialogActivity extends Activity {
         
 		AlertDialog.Builder builder;
 		int apiLevel = Build.VERSION.SDK_INT;
-        if (apiLevel < Build.VERSION_CODES.HONEYCOMB) {
-        	 builder = new AlertDialog.Builder(this);
-        } else if (apiLevel < Build.VERSION_CODES.ICE_CREAM_SANDWICH){
-        	builder = new AlertDialog.Builder(this, AlertDialog.THEME_HOLO_LIGHT);
-        } else {
-        	builder = new AlertDialog.Builder(this, AlertDialog.THEME_HOLO_LIGHT);
-        }
+		if (apiLevel < Build.VERSION_CODES.HONEYCOMB) {
+			 builder = new AlertDialog.Builder(this);
+		} else if (apiLevel < Build.VERSION_CODES.ICE_CREAM_SANDWICH){
+			builder = new AlertDialog.Builder(this, AlertDialog.THEME_HOLO_LIGHT);
+		} else {
+			builder = new AlertDialog.Builder(this, AlertDialog.THEME_HOLO_LIGHT);
+		}
 		builder.setTitle(R.string.clear_clip_confirm_title).setMessage(R.string.clear_clip_confirm_text);
 		builder.setPositiveButton(R.string.clear_confirm_ok, new DialogInterface.OnClickListener() {
 			@Override
