@@ -2,11 +2,13 @@ package org.programus.android.floatings.activities;
 
 import org.programus.android.floatings.R;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -18,11 +20,20 @@ public class DialogActivity extends Activity {
 	public final static int RESULT_OK = 1;
 	public final static int RESULT_CANCEL = 0;
 
-    @Override
+    @SuppressLint("NewApi")
+	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		AlertDialog.Builder builder;
+		int apiLevel = Build.VERSION.SDK_INT;
+        if (apiLevel < Build.VERSION_CODES.HONEYCOMB) {
+        	 builder = new AlertDialog.Builder(this);
+        } else if (apiLevel < Build.VERSION_CODES.ICE_CREAM_SANDWICH){
+        	builder = new AlertDialog.Builder(this, AlertDialog.THEME_HOLO_LIGHT);
+        } else {
+        	builder = new AlertDialog.Builder(this, AlertDialog.THEME_HOLO_LIGHT);
+        }
 		builder.setTitle(R.string.clear_clip_confirm_title).setMessage(R.string.clear_clip_confirm_text);
 		builder.setPositiveButton(R.string.clear_confirm_ok, new DialogInterface.OnClickListener() {
 			@Override
