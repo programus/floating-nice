@@ -1,0 +1,26 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/settingsLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <CheckBox
+        android:id="@+id/enabledAdmin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/enabled_admin" />
+
+    <CheckBox
+        android:id="@+id/sleepSwitchCheckbox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/show_sleep_floating" />
+
+    <CheckBox
+        android:id="@+id/netSwitchCheckbox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/show_netspeed_floating" />
+
+</LinearLayout>
