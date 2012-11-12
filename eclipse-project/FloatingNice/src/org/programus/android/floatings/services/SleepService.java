@@ -187,6 +187,10 @@ public class SleepService extends FloatingService {
 					if (event.getEventTime() - lastMoveTime < 100 && event.getEventTime() - lastHoldTime < 500) {
 						Intent intent = new Intent(SleepService.this, DialogActivity.class); 
 						intent.putExtra(DialogActivity.CLASS_KEY, SleepService.class.getCanonicalName());
+						intent.putExtra(DialogActivity.TITLE_KEY, R.string.clear_clip_confirm_title);
+						intent.putExtra(DialogActivity.MESSAGE_KEY, R.string.clear_clip_confirm_text);
+						intent.putExtra(DialogActivity.POS_BUTTON_KEY, R.string.clear_confirm_ok);
+						intent.putExtra(DialogActivity.NEG_BUTTON_KEY, R.string.clear_confirm_cancel);
 						intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 						startActivity(intent);
 					} else {
