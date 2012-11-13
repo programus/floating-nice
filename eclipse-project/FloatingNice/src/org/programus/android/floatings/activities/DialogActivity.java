@@ -93,10 +93,10 @@ public class DialogActivity extends Activity {
         // Retrieve data necessary for an AlertDialog from intent.
         Intent intent = this.getIntent();
         Bundle extras = intent.getExtras();
-        String title = extras.getString(TITLE_KEY);
-        String message = extras.getString(MESSAGE_KEY);
-        String posButton = extras.getString(POS_BUTTON_KEY);
-        String negButton = extras.getString(NEG_BUTTON_KEY);
+        int title = extras.getInt(TITLE_KEY);
+        int message = extras.getInt(MESSAGE_KEY);
+        int posButton = extras.getInt(POS_BUTTON_KEY);
+        int negButton = extras.getInt(NEG_BUTTON_KEY);
 
         // Construct a builder to build dialog
         AlertDialog.Builder builder;
@@ -110,13 +110,13 @@ public class DialogActivity extends Activity {
             builder = new AlertDialog.Builder(this, AlertDialog.THEME_HOLO_LIGHT);
         }
 
-        if (title != null) {
+        if (title != 0) {
             builder.setTitle(title);
         }
-        if (message != null) {
+        if (message != 0) {
             builder.setMessage(message);
         }
-        if (posButton != null) {
+        if (posButton != 0) {
             builder.setPositiveButton(R.string.clear_confirm_ok, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -124,7 +124,7 @@ public class DialogActivity extends Activity {
                 }
             });
         }
-        if (negButton != null) {
+        if (negButton != 0) {
             builder.setNegativeButton(R.string.clear_confirm_cancel, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {

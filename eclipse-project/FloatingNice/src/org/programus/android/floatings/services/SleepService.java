@@ -360,7 +360,7 @@ public class SleepService extends FloatingService {
 		}
 	}
 	
-	private void showClipView(View down, int dir) {
+	private void showClipView(View base, int dir) {
 		if (this.clip != null && !this.clipAdded) {
 			CharSequence content = this.getClipboardContent();
 			if (content != null && content.length() > 0) {
@@ -369,17 +369,18 @@ public class SleepService extends FloatingService {
 				this.clip.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
 				int w = this.clip.getMeasuredWidth();
 				int h = this.clip.getMeasuredHeight();
-				int vw = image.getWidth();
-				int vh = image.getHeight();
+				int vw = base.getWidth();
+				int vh = base.getHeight();
 				
 				int[][] offset = Constants.xoffsets[dir];
 				int[] offsetX = offset[0];
 				int[] offsetY = offset[1];
 				
-				this.clipLp.x = this.downLp.x + vw * offsetX[0] + MARGIN * offsetX[1] + w * offsetX[2];
-				this.clipLp.y = this.downLp.y + vh * offsetY[0] + MARGIN * offsetY[1] + h * offsetY[2];
-				Log.d("CLIPVIEW", String.format("clip size:(%d,%d), view size:(%d,%d), view xy:(%d,%d), offsets:[%d, %d, %d, %d]", 
-						w, h, vw, vh, this.downLp.x, this.downLp.y, offsetX[0], offsetX[1], offsetY[0], offsetY[1]));
+    			int[] xy = new int[2];
+    			base.getLocationOnScreen(xy);
+    			
+				this.clipLp.x = xy[0] + vw * offsetX[0] + MARGIN * offsetX[1] + w * offsetX[2];
+				this.clipLp.y = xy[1] + vh * offsetY[0] + MARGIN * offsetY[1] + h * offsetY[2];
 				this.getWm().addView(this.clip, this.clipLp);
 				this.clipAdded = true;
 			}
@@ -405,7 +406,7 @@ public class SleepService extends FloatingService {
 		if (ret) {
 			image.setImageResource(R.drawable.lock);
 			this.showDownView(image, this.crossDir);
-			this.showClipView(this.down, xDir);
+			this.showClipView(image, xDir);
 			extended = true;
 			Log.d("DEBUG", "changed to big icon");
 			handler.sendEmptyMessageDelayed(0, TIMEOUT);
