@@ -15,6 +15,7 @@ import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
@@ -158,7 +159,6 @@ public class SleepService extends FloatingService {
 				LayoutParams.FLAG_NOT_FOCUSABLE, 
 				PixelFormat.TRANSPARENT);
 		this.clipLp.gravity = Gravity.TOP | Gravity.LEFT;
-		this.clipLp.screenOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
 		
 		this.clip.setOnTouchListener(new OnTouchListener() {
 			private long lastHoldTime;
@@ -238,7 +238,6 @@ public class SleepService extends FloatingService {
 				LayoutParams.FLAG_NOT_FOCUSABLE, 
 				PixelFormat.TRANSPARENT);
 		this.downLp.gravity = Gravity.TOP | Gravity.LEFT;
-		this.downLp.screenOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
 		
 		this.down.setOnClickListener(new OnClickListener() {
 			@Override
