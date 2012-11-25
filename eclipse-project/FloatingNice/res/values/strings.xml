@@ -21,5 +21,6 @@
     <string name="clear_confirm_cancel">NOT Clear</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_dialog">DialogActivity</string>
+    <string name="sound_text">Normal Mode</string>
 
 </resources>

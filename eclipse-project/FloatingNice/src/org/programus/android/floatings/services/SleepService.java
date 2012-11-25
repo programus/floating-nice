@@ -14,8 +14,6 @@ import android.app.admin.DevicePolicyManager;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
@@ -23,6 +21,7 @@ import android.graphics.PixelFormat;
 import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -53,6 +52,10 @@ public class SleepService extends FloatingService {
 	private ImageView down;
 	private LayoutParams downLp;
 	private boolean downAdded;
+	
+	private ImageView sound;
+	private LayoutParams soundLp;
+	private boolean soundAdded;
 	
 	/** The view to show clipboard content */
 	private View clip;
@@ -125,6 +128,7 @@ public class SleepService extends FloatingService {
 	private void functionView(View v) {
 		image = (ImageView) v.findViewById(R.id.sleepImageView);
 		this.initDownView();
+		this.initSoundView();
 		this.initClipView();
 		if (this.handler == null) {
 			this.handler = new RestoreIconHandler(this);
@@ -228,6 +232,34 @@ public class SleepService extends FloatingService {
 		}
 	}
 	
+	private void toggleRingMode() {
+	    AudioManager am = (AudioManager) this.getSystemService(AUDIO_SERVICE);
+	    am.setRingerMode(am.getRingerMode() == AudioManager.RINGER_MODE_NORMAL ? 
+	        AudioManager.RINGER_MODE_VIBRATE : AudioManager.RINGER_MODE_NORMAL);
+	}
+	
+	private void initSoundView() {
+	    View v = LayoutInflater.from(this).inflate(R.layout.sound_view, null);
+	    this.sound = (ImageView) v.findViewById(R.id.soundImageView);
+	    this.soundLp = new LayoutParams(
+	        LayoutParams.WRAP_CONTENT,
+	        LayoutParams.WRAP_CONTENT,
+	        LayoutParams.TYPE_SYSTEM_ERROR,
+	        LayoutParams.FLAG_NOT_FOCUSABLE,
+	        PixelFormat.TRANSPARENT);
+	    this.soundLp.gravity = Gravity.TOP | Gravity.LEFT;
+	    
+	    this.sound.setOnClickListener(new OnClickListener() {
+	        @Override
+	        public void onClick(View v) {
+	            toggleRingMode();
+	            setSoundImage();
+	            restoreMenu(image);
+	            v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
+	        }
+	    });
+	}
+	
 	private void initDownView() {
 		View v = LayoutInflater.from(this).inflate(R.layout.down_view, null);
 		this.down = (ImageView) v.findViewById(R.id.downImageView);
@@ -311,11 +343,33 @@ public class SleepService extends FloatingService {
 			int[] xy = new int[2];
 			image.getLocationOnScreen(xy);
 			int[] offset = Constants.offsets[dir];
-			this.downLp.x = xy[0] + w * offset[0];
-			this.downLp.y = xy[1] + h * offset[1] - r.top;
+			this.downLp.x = xy[0] + w * 2 * offset[0];           // double width because there is the sound icon
+			this.downLp.y = xy[1] + h * 2 * offset[1] - r.top;   // double height because there is the sound icon
 			this.getWm().addView(this.down, this.downLp);
 			this.downAdded = true;
 		}
+	}
+	
+	private void setSoundImage() {
+	    AudioManager am = (AudioManager) this.getSystemService(AUDIO_SERVICE);
+	    int imageResource = am.getRingerMode() == AudioManager.RINGER_MODE_NORMAL ? R.drawable.sound : R.drawable.mute;
+	    this.sound.setImageResource(imageResource);
+	}
+	
+	private void showSoundView(ImageView image, int dir) {
+	    Rect r = this.getVisibleRect(image);
+	    if (!this.soundAdded) {
+	        this.setSoundImage();
+	        int w = image.getWidth() + MARGIN;
+	        int h = image.getHeight() + MARGIN;
+	        int[] xy = new int[2];
+	        image.getLocationOnScreen(xy);
+	        int[] offset = Constants.offsets[dir];
+	        this.soundLp.x = xy[0] + w * offset[0];
+	        this.soundLp.y = xy[1] + h * offset[1] - r.top;
+	        this.getWm().addView(this.sound, this.soundLp);
+	        this.soundAdded = true;
+	    }
 	}
 	
 	@SuppressLint("NewApi")
@@ -386,6 +440,13 @@ public class SleepService extends FloatingService {
 		}
 	}
 	
+	private void hideSoundView() {
+	    if (this.soundAdded) {
+	        this.getWm().removeView(this.sound);
+	        this.soundAdded = false;
+	    }
+	}
+	
 	private void hideDownView() {
 		if (this.downAdded) {
 			this.getWm().removeView(this.down);
@@ -405,6 +466,7 @@ public class SleepService extends FloatingService {
 		if (ret) {
 			image.setImageResource(R.drawable.lock);
 			this.showDownView(image, this.crossDir);
+			this.showSoundView(image, this.crossDir);
 			this.showClipView(image, xDir);
 			extended = true;
 			Log.d("DEBUG", "changed to big icon");
@@ -419,6 +481,7 @@ public class SleepService extends FloatingService {
 		if (extended) {
 			this.rotateMenuImage(this.crossDir);
 			this.hideDownView();
+			this.hideSoundView();
 			if (!this.clipHolded) {
 				this.hideClipView();
 			}
