@@ -11,6 +11,6 @@
     <color name="clip_text_color">#FFF</color>
     <color name="clip_mark_bgcolor">#DDDC</color>
     <color name="clip_mark_shaddow_color">#D000</color>
-    <color name="clip_border_color">#7FFFFFFF</color>
+    <color name="clip_border_color">#3FFFFFFF</color>
 
 </resources>
