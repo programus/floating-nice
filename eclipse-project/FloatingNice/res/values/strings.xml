@@ -22,5 +22,6 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_dialog">DialogActivity</string>
     <string name="sound_text">Normal Mode</string>
+    <string name="ver_name">0.9 / 2012.11.27 build</string>
 
 </resources>
