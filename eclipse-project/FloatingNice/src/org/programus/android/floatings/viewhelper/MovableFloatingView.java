@@ -7,9 +7,12 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.PixelFormat;
+import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.SystemClock;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -28,6 +31,8 @@ public class MovableFloatingView implements IOrientationChangedListener {
 	private LayoutParams lp;
 	private boolean added;
 	
+	private Rect r = new Rect();
+	
 	private int orientation;
 	
 	private boolean moving;
@@ -38,26 +43,29 @@ public class MovableFloatingView implements IOrientationChangedListener {
 	private OnTouchListener touchMove = new OnTouchListener() {
 		private float x;
 		private float y;
+	    private Point p = new Point();
 		@Override
 		public boolean onTouch(View v, MotionEvent event) {
 			int action = event.getAction();
 			switch(action) {
 			case MotionEvent.ACTION_DOWN:
-				this.x = event.getRawX() - lp.x;
-				this.y = event.getRawY() - lp.y;
+			    p = getAdjustedViewPosition(p);
+				this.x = event.getRawX() - p.x;
+				this.y = event.getRawY() - p.y;
 				setTouching(true);
 				setMoved(false);
 				break;
 			case MotionEvent.ACTION_MOVE:
 //				Log.d("[x,y]", MessageFormat.format("({0},{1}), ({2},{3})", event.getRawX(), event.getRawY(), x, y));
+			    p = getAdjustedViewPosition(p);
 				int nx = (int)(event.getRawX() - x);
 				int ny = (int)(event.getRawY() - y);
-				int dx = Math.abs(nx - lp.x);
-				int dy = Math.abs(ny - lp.y);
-//				Log.d("[x,y]", String.format("(dx, dy) = (%f, %f)", dx, dy));
+				int dx = Math.abs(nx - p.x);
+				int dy = Math.abs(ny - p.y);
+//				Log.d("[x,y]", String.format("(%f, %f) - (%f, %f) -> (dx, dy) = (%d, %d) / (%d, %d)", event.getRawX(), event.getRawY(), x, y, dx, dy, lp.x, lp.y));
 				if (!isForceStable() && (isMoving() || dx > THRESHOLD || dy > THRESHOLD)) {
 					MovableFloatingView.this.calcViewPostion((int)(nx), (int)(ny));
-					MovableFloatingView.this.updateViewPostion();
+					MovableFloatingView.this.updateViewPosition();
 					setMoving(true);
 					setMoved(true);
 				}
@@ -88,8 +96,31 @@ public class MovableFloatingView implements IOrientationChangedListener {
 		this.view = view;
 		this.sp = view.getContext().getSharedPreferences(key, Context.MODE_PRIVATE);
 	}
+	
+	public Point getAdjustedViewPosition(Point p) {
+	    int x = lp.x;
+	    int y = lp.y;
+	    this.view.getRootView().getWindowVisibleDisplayFrame(r);
+	    if (x < 0) {
+	        x = 0;
+	    } else if (x + this.view.getWidth() > r.width()) {
+	        x = r.width() - this.view.getWidth();
+	    }
+	    if (y < 0) {
+	        y = 0;
+	    } else if (y + this.view.getHeight() > r.height()) {
+	        y = r.height() - this.view.getHeight();
+	    }
+	    if (p == null) {
+	        p = new Point(x, y);
+	    } else {
+	        p.x = x;
+	        p.y = y;
+	    }
+	    return p;
+	}
 
-	public void updateViewPostion() {
+	public void updateViewPosition() {
 		if (this.added) {
 			this.wm.updateViewLayout(this.view, this.lp);
 		} else {
@@ -185,7 +216,6 @@ public class MovableFloatingView implements IOrientationChangedListener {
 		Log.d("ORC", String.format("Orientation: %d -> %d", this.orientation, orientation));
 		if (this.orientation != orientation) {
 			View root = this.view.getRootView();
-			Rect r = new Rect();
 			root.getWindowVisibleDisplayFrame(r);
 			int x = lp.x;
 			int y = lp.y;
@@ -201,7 +231,7 @@ public class MovableFloatingView implements IOrientationChangedListener {
 			Log.d("ORC", String.format("(%d, %d), (%d, %d), (%d, %d)", lp.x, lp.y, vw, vh, w, h));
 			
 			this.orientation = orientation;
-			this.updateViewPostion();
+			this.updateViewPosition();
 			this.onTouchListener.onTouch(this.view, MotionEvent.obtain(SystemClock.uptimeMillis(), SystemClock.uptimeMillis(), MotionEvent.ACTION_CANCEL, 0, 0, 0));
 		}
 	}

@@ -18,6 +18,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.graphics.PixelFormat;
+import android.graphics.Point;
 import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
@@ -63,6 +64,8 @@ public class SleepService extends FloatingService {
 	private TextView clipContent;
 	private boolean clipAdded;
 	private boolean clipHolded;
+	
+	private Point pos = new Point();
 	
 	private Bitmap[] menubmps = new Bitmap[4];
 	
@@ -340,11 +343,10 @@ public class SleepService extends FloatingService {
 		if (!this.downAdded && r.top > 0) {
 			int w = image.getWidth() + MARGIN;
 			int h = image.getHeight() + MARGIN;
-			int[] xy = new int[2];
-			image.getLocationOnScreen(xy);
+	        Point p = this.getAdjustedViewPosition(pos);
 			int[] offset = Constants.offsets[dir];
-			this.downLp.x = xy[0] + w * 2 * offset[0];           // double width because there is the sound icon
-			this.downLp.y = xy[1] + h * 2 * offset[1] - r.top;   // double height because there is the sound icon
+			this.downLp.x = p.x + w * 2 * offset[0];           // double width because there is the sound icon
+			this.downLp.y = p.y + h * 2 * offset[1];   // double height because there is the sound icon
 			this.getWm().addView(this.down, this.downLp);
 			this.downAdded = true;
 		}
@@ -357,16 +359,14 @@ public class SleepService extends FloatingService {
 	}
 	
 	private void showSoundView(ImageView image, int dir) {
-	    Rect r = this.getVisibleRect(image);
 	    if (!this.soundAdded) {
 	        this.setSoundImage();
 	        int w = image.getWidth() + MARGIN;
 	        int h = image.getHeight() + MARGIN;
-	        int[] xy = new int[2];
-	        image.getLocationOnScreen(xy);
+	        Point p = this.getAdjustedViewPosition(pos);
 	        int[] offset = Constants.offsets[dir];
-	        this.soundLp.x = xy[0] + w * offset[0];
-	        this.soundLp.y = xy[1] + h * offset[1] - r.top;
+	        this.soundLp.x = p.x + w * offset[0];
+	        this.soundLp.y = p.y + h * offset[1];
 	        this.getWm().addView(this.sound, this.soundLp);
 	        this.soundAdded = true;
 	    }
@@ -413,7 +413,7 @@ public class SleepService extends FloatingService {
 		}
 	}
 	
-	private void showClipView(View base, int dir) {
+	private void showClipView(View base, int dir, int xdir) {
 		if (this.clip != null && !this.clipAdded) {
 			CharSequence content = this.getClipboardContent();
 			if (content != null && content.length() > 0) {
@@ -425,15 +425,14 @@ public class SleepService extends FloatingService {
 				int vw = base.getWidth();
 				int vh = base.getHeight();
 				
-				int[][] offset = Constants.xoffsets[dir];
+				int[][] offset = Constants.xoffsets[xdir][dir];
 				int[] offsetX = offset[0];
 				int[] offsetY = offset[1];
 				
-    			int[] xy = new int[2];
-    			base.getLocationOnScreen(xy);
+    	        Point p = this.getAdjustedViewPosition(pos);
     			
-				this.clipLp.x = xy[0] + vw * offsetX[0] + MARGIN * offsetX[1] + w * offsetX[2];
-				this.clipLp.y = xy[1] + vh * offsetY[0] + MARGIN * offsetY[1] + h * offsetY[2];
+				this.clipLp.x = p.x + vw * offsetX[0] + MARGIN * offsetX[1] + w * offsetX[2];
+				this.clipLp.y = p.y + vh * offsetY[0] + MARGIN * offsetY[1] + h * offsetY[2];
 				this.getWm().addView(this.clip, this.clipLp);
 				this.clipAdded = true;
 			}
@@ -467,7 +466,7 @@ public class SleepService extends FloatingService {
 			image.setImageResource(R.drawable.lock);
 			this.showDownView(image, this.crossDir);
 			this.showSoundView(image, this.crossDir);
-			this.showClipView(image, xDir);
+			this.showClipView(image, this.crossDir, this.xDir);
 			extended = true;
 			Log.d("DEBUG", "changed to big icon");
 			handler.sendEmptyMessageDelayed(0, TIMEOUT);

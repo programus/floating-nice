@@ -94,7 +94,7 @@ public abstract class FloatingService extends Service implements OnTouchListener
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		super.onStartCommand(intent, flags, startId);
 		Log.d("DEBUG", "Service is started");
-		this.view.updateViewPostion();
+		this.view.updateViewPosition();
 		this.startForeground(notificationId, notification);
 		return START_STICKY;
 	}
@@ -122,5 +122,9 @@ public abstract class FloatingService extends Service implements OnTouchListener
 
 	protected WindowManager getWm() {
 		return wm;
+	}
+	
+	protected Point getAdjustedViewPosition(Point p) {
+	    return this.view.getAdjustedViewPosition(p);
 	}
 }
