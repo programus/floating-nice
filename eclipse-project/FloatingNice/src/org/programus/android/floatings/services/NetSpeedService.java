@@ -3,6 +3,7 @@ package org.programus.android.floatings.services;
 import java.text.DecimalFormat;
 
 import org.programus.android.floatings.R;
+import org.programus.android.floatings.SettingsActivity;
 import org.programus.android.floatings.services.core.FloatingService;
 
 import android.content.Intent;
@@ -12,8 +13,14 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnLongClickListener;
 import android.widget.TextView;
 
+/**
+ * The floating view to show the net speed
+ * @author programus
+ *
+ */
 public class NetSpeedService extends FloatingService {
 	private View view;
 	private TextView upValue;
@@ -27,18 +34,34 @@ public class NetSpeedService extends FloatingService {
 	private boolean stopped;
 	private long interval;
 	
+	/**
+	 * the flag to stop loop
+	 * @return <code>true</code> if loop is stopped flag
+	 */
 	public boolean isStopped() {
 		return stopped;
 	}
 	
+	/**
+	 * set the stop loop flag
+	 * @param stopped set this as <code>true</code> when the loop need to be stopped.
+	 */
 	public void setStopped(boolean stopped) {
 		this.stopped = stopped;
 	}
 	
+	/**
+	 * return the interval for refreshing
+	 * @return the interval
+	 */
 	public long getInterval() {
 		return this.interval;
 	}
 	
+	/**
+	 * set the interval for refreshing
+	 * @param interval the interval
+	 */
 	public void setInterval(long interval) {
 		this.interval = interval;
 	}
@@ -99,6 +122,15 @@ public class NetSpeedService extends FloatingService {
 	private void init() {
 		this.upValue = (TextView) this.view.findViewById(R.id.upValue);
 		this.dnValue = (TextView) this.view.findViewById(R.id.dnValue);
+		this.view.setOnLongClickListener(new OnLongClickListener(){
+            @Override
+            public boolean onLongClick(View v) {
+                if (!isMoving()) {
+                    SettingsActivity.startActivity(NetSpeedService.this);
+                }
+                return false;
+            }
+		});
 		this.setInterval(500);
 		if (this.updatingThread == null || !this.updatingThread.isAlive()) {
 			this.updatingThread = new Thread(this.netSpeedGetter);

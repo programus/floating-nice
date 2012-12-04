@@ -40,13 +40,20 @@ import android.view.WindowManager.LayoutParams;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+/**
+ * The service for multi-function floating view.
+ * @author programus
+ *
+ */
 public class SleepService extends FloatingService {
 	
 	private DevicePolicyManager mDPM;
 	private ImageView image;
 	private Handler handler;
 	private boolean extended;
+	/** the directions: → ↓ ← ↑ */
 	private int crossDir;
+	/** the directions: ↘ ↙ ↖ ↗ */
 	private int xDir;
 	
 	/** The view to expand the status bar */
@@ -513,18 +520,9 @@ public class SleepService extends FloatingService {
 	
 	private void updateDir(View v) {
 		Rect bdRect = this.getVisibleRect(v);
-		LayoutParams lp = this.getLp();
-		int x = lp.x + (this.menubmps[0].getWidth() >> 1);
-		int y = lp.y + (this.menubmps[0].getHeight() >> 1);
-//		int[] xy = new int[2];
-//		v.getLocationOnScreen(xy);
-//		int x = xy[0] + (v.getWidth() >> 1);
-//		int y = xy[1] + (v.getHeight() >> 1);
-//		if (x == 0 && y == 0) {
-//			LayoutParams lp = this.getLp();
-//			x = lp.x + (this.menubmps[0].getWidth() >> 1);
-//			y = lp.y + (this.menubmps[0].getHeight() >> 1);
-//		}
+		Point p = this.getAdjustedViewPosition(pos);
+		int x = p.x + (this.menubmps[0].getWidth() >> 1);
+		int y = p.y + (this.menubmps[0].getHeight() >> 1);
 		y -= bdRect.top;
 		Log.d("DIR", String.format("(%d, %d)", x, y));
 		int bx = bdRect.width();

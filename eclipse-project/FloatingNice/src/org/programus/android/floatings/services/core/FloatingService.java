@@ -17,15 +17,23 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.WindowManager;
-import android.view.WindowManager.LayoutParams;
 
+/**
+ * The service to display the floating views. All floating views must extends this class.
+ * @author programus
+ *
+ */
 public abstract class FloatingService extends Service implements OnTouchListener {
 	
+    /** an instance of the view helper */
 	private MovableFloatingView view;
 	private static int notificationId = 2;
+	/** a notification to keep the service alive when task manager try to kill it */
 	private static Notification notification;
 	
+	/** the window manager to add or remove views */
 	private WindowManager wm;
+	/** a receiver to receive orientation change broadcast */
 	private BroadcastReceiver receiver;
 	
 	@Override
@@ -37,6 +45,7 @@ public abstract class FloatingService extends Service implements OnTouchListener
 	public void onCreate() {
 		super.onCreate();
 		Log.d("DEBUG", "Service is created");
+		// initialize member variables
 		this.wm = (WindowManager) this.getSystemService(WINDOW_SERVICE);
 		View v = this.getFloatingView();
 		this.view = new MovableFloatingView(v, this.getClass().getCanonicalName());
@@ -44,13 +53,12 @@ public abstract class FloatingService extends Service implements OnTouchListener
 		Point p = this.getInitPosition();
 		this.view.init(this.wm, p.x, p.y);
 		if (notification == null) {
+		    // build a notification to show nothing just to keep this service alive
 			NotificationCompat.Builder builder = new NotificationCompat.Builder(this.getApplicationContext());
-//			builder.setSmallIcon(android.R.drawable.ic_dialog_info);
-//			builder.setContentTitle("Floating");
-//			builder.setContentText("Running...");
 			notification = builder.build();
 		}
 		
+		// set up the orientation change receiver.
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(OrientationChangedReceiver.BCAST_CONFIGCHANGED);
 		if (this.receiver == null) {
@@ -59,35 +67,59 @@ public abstract class FloatingService extends Service implements OnTouchListener
 		this.registerReceiver(receiver, filter);
 	}
 	
+	/**
+	 * set up the view
+	 * @return the real view to show
+	 */
 	protected abstract View getFloatingView();
 	
+	/**
+	 * set up the initial point to display the view
+	 * @return the initial point
+	 */
 	protected Point getInitPosition() {
 		Point p = new Point(0, 0);
 		return p;
 	}
 	
+	/**
+	 * detect whether the view is being moved
+	 * @return <code>true</code> if moving
+	 */
 	public boolean isMoving() {
 		return this.view.isMoving();
 	}
 	
+	/**
+	 * detect whether the view is moved
+	 * @return <code>true</code> if moved
+	 */
 	public boolean isMoved() {
 		return this.view.isMoved();
 	}
 	
+	/**
+	 * detect whether the view is being touched
+	 * @return <code>true</code> if being touched
+	 */
 	public boolean isTouching() {
 		return this.view.isTouching();
 	}
 	
+	/**
+	 * force stable means this view is forced stable
+	 * @return <code>true</code> if forced stable
+	 */
 	public boolean isForceStable() {
 		return this.view.isForceStable();
 	}
 	
+	/**
+	 * set the force stable status.
+	 * @param stable <code>true</code> if force stable
+	 */
 	public void setForceStable(boolean stable) {
 		this.view.setForceStable(stable);
-	}
-	
-	protected LayoutParams getLp() {
-		return this.view.getLp();
 	}
 
 	@Override

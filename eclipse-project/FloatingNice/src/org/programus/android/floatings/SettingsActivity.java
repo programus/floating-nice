@@ -19,6 +19,11 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
+/**
+ * The main activity of this application which is also the settings UI
+ * @author programus
+ *
+ */
 public class SettingsActivity extends Activity {
 	private SharedPreferences sp;
 	private DevicePolicyManager dpm;
@@ -106,13 +111,10 @@ public class SettingsActivity extends Activity {
 		super.onResume();
 		Log.d("DEBUG", "Resume");
         CheckBox netCheckbox = (CheckBox) this.findViewById(R.id.netSwitchCheckbox);
-        netCheckbox.setOnCheckedChangeListener(new CheckedChangeListener(NetSpeedService.class));
         netCheckbox.setChecked(Utilities.isTrafficStatsSupported() ? sp.getBoolean(Utilities.getKey(NetSpeedService.class, Constants.ENABLED), false) : false);
         netCheckbox.setEnabled(Utilities.isTrafficStatsSupported());
         
         final CheckBox sleepCheckbox = (CheckBox) this.findViewById(R.id.sleepSwitchCheckbox);
-        final OnCheckedChangeListener sleepListener = new CheckedChangeListener(SleepService.class);
-        sleepCheckbox.setOnCheckedChangeListener(sleepListener);
 		sleepCheckbox.setChecked(dpm.isAdminActive(cName) ? sp.getBoolean(Utilities.getKey(SleepService.class, Constants.ENABLED), false) : false);
 		sleepCheckbox.setEnabled(dpm.isAdminActive(cName));
 		
@@ -120,9 +122,15 @@ public class SettingsActivity extends Activity {
         enableAdminCheckbox.setChecked(dpm.isAdminActive(cName));
 	}
 	
+	/**
+	 * Start this activity. This method is used by other components to start this activity. 
+	 * @param context
+	 */
 	public static void startActivity(Context context) {
 		Intent intent = new Intent(context, SettingsActivity.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+		intent.putExtra(Constants.SELF_START, true);
 		context.startActivity(intent);
 	}
 }

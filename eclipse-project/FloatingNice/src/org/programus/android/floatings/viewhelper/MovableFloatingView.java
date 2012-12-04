@@ -10,9 +10,7 @@ import android.graphics.PixelFormat;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.SystemClock;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Display;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,6 +18,11 @@ import android.view.View.OnTouchListener;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 
+/**
+ * The view helper class to locate, move, show, orientation change the view.
+ * @author programus
+ *
+ */
 public class MovableFloatingView implements IOrientationChangedListener {
 	private View view;
 	private SharedPreferences sp;
@@ -92,11 +95,24 @@ public class MovableFloatingView implements IOrientationChangedListener {
 		editor.commit();
 	}
 
+	/**
+	 * constructor
+	 * @param view the view to show, move, ... etc.
+	 * @param key the key to save/restore the data of the view
+	 */
 	public MovableFloatingView(View view, String key) {
 		this.view = view;
 		this.sp = view.getContext().getSharedPreferences(key, Context.MODE_PRIVATE);
 	}
 	
+	/**
+	 * return the position in the screen. 
+	 * 
+	 * Normally, the position might be out of the screen, but the view is still be shown in the screen. 
+	 * This method returns the position which is be shown.
+	 * @param p the raw position
+	 * @return the adjusted position
+	 */
 	public Point getAdjustedViewPosition(Point p) {
 	    int x = lp.x;
 	    int y = lp.y;
@@ -120,6 +136,9 @@ public class MovableFloatingView implements IOrientationChangedListener {
 	    return p;
 	}
 
+	/**
+	 * update view position
+	 */
 	public void updateViewPosition() {
 		if (this.added) {
 			this.wm.updateViewLayout(this.view, this.lp);
@@ -129,6 +148,9 @@ public class MovableFloatingView implements IOrientationChangedListener {
 		}
 	}
 	
+	/**
+	 * hide view
+	 */
 	public void removeView() {
 		if (this.added) {
 			this.wm.removeView(this.view);
@@ -142,6 +164,12 @@ public class MovableFloatingView implements IOrientationChangedListener {
 //		Log.d("[x,y]", MessageFormat.format("({0}, {1})", lp.x, lp.y));
 	}
 
+	/**
+	 * init the view
+	 * @param wm
+	 * @param x
+	 * @param y
+	 */
 	public void init(WindowManager wm, int x, int y) {
 		this.wm = wm;
 		this.lp = new LayoutParams(
@@ -160,30 +188,58 @@ public class MovableFloatingView implements IOrientationChangedListener {
 		this.view.setOnTouchListener(this.touchMove);
 	}
 	
+	/**
+	 * init the view by the (0, 0) position as default
+	 * @param wm
+	 */
 	public void init(WindowManager wm) {
 		this.init(wm, 0, 0);
 	}
 
+	/**
+	 * 
+	 * @return true if moving
+	 */
 	public boolean isMoving() {
 		return moving;
 	}
 
+	/**
+	 * set the moving status
+	 * @param moving
+	 */
 	public void setMoving(boolean moving) {
 		this.moving = moving;
 	}
 
+	/**
+	 * 
+	 * @return true if touching
+	 */
 	public boolean isTouching() {
 		return touching;
 	}
 
+	/**
+	 * set the touching status
+	 * @param touching
+	 */
 	public void setTouching(boolean touching) {
 		this.touching = touching;
 	}
 
+	/**
+	 * 
+	 * @return true if force stable 
+	 */
 	public boolean isForceStable() {
 		return forceStable;
 	}
 
+	/**
+	 * set the force stable status
+	 * @param forceStable
+	 */
 	public void setForceStable(boolean forceStable) {
 		this.forceStable = forceStable;
 		if (forceStable) {
@@ -191,22 +247,26 @@ public class MovableFloatingView implements IOrientationChangedListener {
 		}
 	}
 
-	public LayoutParams getLp() {
-		return lp;
-	}
-
-	public OnTouchListener getOnTouchListener() {
-		return onTouchListener;
-	}
-
+	/**
+	 * set the touch listener need to process the touch event
+	 * @param onTouchListener
+	 */
 	public void setOnTouchListener(OnTouchListener onTouchListener) {
 		this.onTouchListener = onTouchListener;
 	}
 
+	/**
+	 * 
+	 * @return the moved status
+	 */
 	public boolean isMoved() {
 		return moved;
 	}
 
+	/**
+	 * set the moved status
+	 * @param moved
+	 */
 	public void setMoved(boolean moved) {
 		this.moved = moved;
 	}
