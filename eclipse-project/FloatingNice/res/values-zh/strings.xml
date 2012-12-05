@@ -1,0 +1,24 @@
+<resources>
+
+    <string name="app_name">Floating Nice</string>
+    <string name="menu_settings">设置</string>
+    <string name="title_activity_settings">FloatingNice</string>
+    <string name="show_netspeed_floating">显示网速监视浮窗</string>
+    <string name="debug_tag">PROGRAMUS</string>
+    <string name="show_sleep_floating">显示多功能按钮浮窗</string>
+    <string name="upload_mark">↑ </string>
+    <string name="download_mark">↓ </string>
+    <string name="enabled_admin">设置为设备管理器（启动多功能按钮的前提）</string>
+    <string name="add_admin_prompt">请激活设备管理器设置，否则多功能按钮无法启动。</string>
+    <string name="up_init_text">---- B/s</string>
+    <string name="dn_init_text">---- B/s</string>
+    <string name="down_text">拉下状态栏</string>
+    <string name="clipboard_mark">= 剪贴板 =</string>
+    <string name="clear_clip_confirm_title">清空确认</string>
+    <string name="clear_clip_confirm_text">清空剪贴板？</string>
+    <string name="clear_confirm_ok">清空</string>
+    <string name="clear_confirm_cancel">不清</string>
+    <string name="title_activity_dialog">DialogActivity</string>
+    <string name="sound_text">正常模式</string>
+
+</resources>

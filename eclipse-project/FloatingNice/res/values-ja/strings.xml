@@ -1,0 +1,20 @@
+<resources>
+
+    <string name="app_name">Floating Nice</string>
+    <string name="menu_settings">設定</string>
+    <string name="title_activity_settings">FloatingNice</string>
+    <string name="show_netspeed_floating">ネットスピード監視ウィンドウ表示</string>
+    <string name="show_sleep_floating">マルチ機能ボタン表示</string>
+    <string name="upload_mark">↑ </string>
+    <string name="download_mark">↓ </string>
+    <string name="enabled_admin">デバイス管理者にする（マルチ機能に必要）</string>
+    <string name="add_admin_prompt">マルチ機能のロック機能を使えるにはデバイス管理者として実行せねばならないため、デバイス管理者に設定してください。</string>
+    <string name="down_text">ステータスバーをエクステンドする</string>
+    <string name="clipboard_mark">= クリップボード =</string>
+    <string name="clear_clip_confirm_title">クリア確認</string>
+    <string name="clear_clip_confirm_text">クリップボードをクリアしますか？</string>
+    <string name="clear_confirm_ok">クリアする</string>
+    <string name="clear_confirm_cancel">クリアしない</string>
+    <string name="sound_text">正常モード</string>
+
+</resources>

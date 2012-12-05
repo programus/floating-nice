@@ -16,7 +16,8 @@
         android:shadowDy="1"
         android:shadowRadius="2"
         android:text="@string/clipboard_mark"
-        android:textColor="@color/clip_mark_color" />
+        android:textColor="@color/clip_mark_color"
+        android:textSize="@dimen/clip_title_size" />
 
     <TextView
         android:id="@+id/clipTextView"
@@ -28,6 +29,7 @@
         android:minLines="@integer/clip_line_min"
         android:minWidth="@dimen/clip_min_width"
         android:singleLine="false"
-        android:textColor="@color/clip_text_color" />
+        android:textColor="@color/clip_text_color"
+        android:textSize="@dimen/clip_text_size" />
 
 </LinearLayout>
