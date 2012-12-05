@@ -28,6 +28,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
@@ -580,4 +581,22 @@ public class SleepService extends FloatingService {
 		}
 		return ret;
 	}
+
+    @SuppressLint("NewApi")
+    @SuppressWarnings("deprecation")
+    @Override
+    protected Point getInitPosition() {
+        Point p = new Point();
+        Display display = this.getWm().getDefaultDisplay();
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB_MR2) {
+            p.x = display.getWidth();
+            p.y = display.getHeight();
+        } else {
+            display.getSize(p);
+        }
+        
+        p.x >>= 1;
+        
+        return p;
+    }
 }
