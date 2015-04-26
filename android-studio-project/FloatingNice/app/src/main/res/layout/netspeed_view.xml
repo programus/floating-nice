@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/view_background"
+    android:orientation="horizontal" >
+
+    <TextView
+        android:id="@+id/upmark"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/upload_mark"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/up_mark_color"
+        android:textSize="@dimen/net_text_size"
+        android:typeface="monospace" />
+
+    <TextView
+        android:id="@+id/upValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.85"
+        android:text="@string/up_init_text"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/up_text_color"
+        android:textSize="@dimen/net_text_size"
+        android:typeface="monospace" />
+
+    <TextView
+        android:id="@+id/dnmark"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/space_between_u_d"
+        android:text="@string/download_mark"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/dn_mark_color"
+        android:textSize="@dimen/net_text_size"
+        android:typeface="monospace" />
+
+    <TextView
+        android:id="@+id/dnValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.85"
+        android:text="@string/dn_init_text"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/dn_text_color"
+        android:textSize="@dimen/net_text_size"
+        android:typeface="monospace" />
+
+</LinearLayout>

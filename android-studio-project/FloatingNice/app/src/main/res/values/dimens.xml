@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="space_between_u_d">5sp</dimen>
+    <dimen name="sleep_text_size">20sp</dimen>
+    <dimen name="sleep_text_margin">5sp</dimen>
+    <dimen name="net_text_size">10sp</dimen>
+    <dimen name="clip_text_size">14sp</dimen>
+    <dimen name="clip_max_width">100sp</dimen>
+    <dimen name="clip_min_width">100sp</dimen>
+    <dimen name="clip_inner_padding">1sp</dimen>
+    <dimen name="clip_content_margin">2sp</dimen>
+    <dimen name="clip_title_size">14sp</dimen>
+</resources>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="clip_mark_color">#f335</color>
+    <color name="view_background">#7f000000</color>
+    <color name="up_mark_color">#aaFF9050</color>
+    <color name="up_text_color">#aaFF5050</color>
+    <color name="dn_mark_color">#aa50FF90</color>
+    <color name="dn_text_color">#aa50FF50</color>
+    <color name="sleep_text_color">#AAFF5050</color>
+    <color name="clip_text_color">#FFF</color>
+    <color name="clip_mark_bgcolor">#DDDC</color>
+    <color name="clip_mark_shaddow_color">#D000</color>
+    <color name="clip_border_color">#3FFFFFFF</color>
+
+</resources>

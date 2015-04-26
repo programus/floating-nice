@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="clip_em_limit">10</integer>
+    <integer name="clip_line_limit">10</integer>
+    <integer name="clip_line_min">5</integer>
+</resources>

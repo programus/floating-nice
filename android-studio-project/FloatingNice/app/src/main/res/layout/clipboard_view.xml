@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/clip_view_background"
+    android:orientation="vertical"
+    android:padding="@dimen/clip_inner_padding" >
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/clip_mark_bgcolor"
+        android:gravity="center"
+        android:shadowColor="@color/clip_mark_color"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="2"
+        android:text="@string/clipboard_mark"
+        android:textColor="@color/clip_mark_color"
+        android:textSize="@dimen/clip_title_size" />
+
+    <TextView
+        android:id="@+id/clipTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/clip_content_margin"
+        android:maxLines="@integer/clip_line_limit"
+        android:maxWidth="@dimen/clip_max_width"
+        android:minLines="@integer/clip_line_min"
+        android:minWidth="@dimen/clip_min_width"
+        android:singleLine="false"
+        android:textColor="@color/clip_text_color"
+        android:textSize="@dimen/clip_text_size" />
+
+</LinearLayout>
