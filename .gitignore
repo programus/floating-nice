@@ -24,3 +24,7 @@ build
 # for vim
 *.swp
 *~
+
+# for customized release folder
+/release
+

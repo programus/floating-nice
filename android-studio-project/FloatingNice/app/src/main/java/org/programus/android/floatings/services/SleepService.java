@@ -1,14 +1,5 @@
 package org.programus.android.floatings.services;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-
-import org.programus.android.floatings.Constants;
-import org.programus.android.floatings.R;
-import org.programus.android.floatings.SettingsActivity;
-import org.programus.android.floatings.activities.DialogActivity;
-import org.programus.android.floatings.services.core.FloatingService;
-
 import android.annotation.SuppressLint;
 import android.app.admin.DevicePolicyManager;
 import android.content.ClipData;
@@ -40,6 +31,15 @@ import android.view.View.OnTouchListener;
 import android.view.WindowManager.LayoutParams;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import org.programus.android.floatings.Constants;
+import org.programus.android.floatings.R;
+import org.programus.android.floatings.SettingsActivity;
+import org.programus.android.floatings.activities.DialogActivity;
+import org.programus.android.floatings.services.core.FloatingService;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 /**
  * The service for multi-function floating view.
@@ -315,6 +315,12 @@ public class SleepService extends FloatingService {
 			}
 		});
 	}
+
+//    // Simulate a back button press. But need root, so not use currently.
+//    private void simBackButton() {
+//        Instrumentation instrumentation = new Instrumentation();
+//        instrumentation.sendKeyDownUpSync(KeyEvent.KEYCODE_BACK);
+//    }
 	
 	private void expandStatusBar() {
 		Object service = this.getSystemService(STATUSBAR);
